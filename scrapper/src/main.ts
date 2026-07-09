@@ -5,6 +5,7 @@ import { Cluster } from 'puppeteer-cluster';
 import { Page } from 'puppeteer';
 import centerSectionScrap from './services/centerSectionScrap';
 import leftSectionScrap from './services/leftSectionScap';
+import techrowScrap from './services/techrowScrap';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -16,7 +17,7 @@ try {
 
 const cluster = await Cluster.launch({
   concurrency: Cluster.CONCURRENCY_PAGE,
-  maxConcurrency: 2,
+  maxConcurrency: 3,
   monitor: true,
   retryLimit: 2,
   retryDelay: 2000,
@@ -35,6 +36,10 @@ cluster.queue(async ({ page }: { page: Page }) => {
   await page.goto(toiUrl, { waitUntil: "domcontentloaded" })
   await leftSectionScrap(page)
 })
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await techrowScrap(page);
+});
 
 
 await cluster.idle();
