@@ -16,7 +16,7 @@ const articleSchema = new mongoose.Schema(
       required: true
     },
     board: {
-      type: [{ rank: { type: Number, required: true }, position: { type: String, required: true, enum: ["heroSection", "leftSection", "techSection"] }, updatedAt: { type: Date, required: true } }],
+      type: [{ rank: { type: Number, required: true }, position: { type: String, required: true, enum: ["heroSection", "leftSection", "techSection", "entertainmentSection"] }, updatedAt: { type: Date, required: true } }],
       required: true
     },
     scan: {

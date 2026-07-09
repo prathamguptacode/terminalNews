@@ -6,6 +6,7 @@ import { Page } from 'puppeteer';
 import centerSectionScrap from './services/centerSectionScrap';
 import leftSectionScrap from './services/leftSectionScap';
 import techrowScrap from './services/techrowScrap';
+import entertainmentScrap from './services/entertainmentScrap';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -40,6 +41,11 @@ cluster.queue(async ({ page }: { page: Page }) => {
   await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
   await techrowScrap(page);
 });
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await entertainmentScrap(page);
+});
+
 
 
 await cluster.idle();
