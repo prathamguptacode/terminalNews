@@ -17,6 +17,7 @@ import businessrowScrap from './services/toiHomepage/businessrowScrap';
 import educationScrap from './services/toiHomepage/educationScrap';
 import techScrap from './services/toiHomepage/techScrap';
 import indiaScrap from './services/indiaPage/indiaScrap';
+import worldNewsScrapper from './services/worldNews/worldScrapper';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -101,6 +102,49 @@ cluster.queue(async ({ page }: { page: Page }) => {
   await page.goto(toiIndiaNewsSection, { waitUntil: 'domcontentloaded' });
   await indiaScrap(page);
 });
+
+const toiWorldnewsPage = 'https://timesofindia.indiatimes.com/world';
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // world news top section on world news page
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(3) a`, postion: "worldNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // us news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(10) a`, postion: "usNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // uk news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(17) a`, postion: "ukNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // europe news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(19) a`, postion: "europeNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // middle east news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(23) a`, postion: "middleEastNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // middle east news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(23) a`, postion: "middleEastNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // other world news section
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(25) a`, postion: "otherWorldNews" })
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
+  // popular world new section 
+  await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(28) a`, postion: "popularWorldNews" })
+});
+
 
 
 
