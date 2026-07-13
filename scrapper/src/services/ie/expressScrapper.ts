@@ -10,7 +10,7 @@ export default async function indiaExpress() {
     retryLimit: 2,
     retryDelay: 2000,
     puppeteerOptions: {
-      headless: false,
+      headless: true,
       defaultViewport: null
     }
   })
