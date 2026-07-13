@@ -16,6 +16,7 @@ import trendingScrap from './services/toiHomepage/trendingScrap';
 import businessrowScrap from './services/toiHomepage/businessrowScrap';
 import educationScrap from './services/toiHomepage/educationScrap';
 import techScrap from './services/toiHomepage/techScrap';
+import indiaScrap from './services/indiaPage/indiaScrap';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -95,6 +96,11 @@ cluster.queue(async ({ page }: { page: Page }) => {
   await techScrap(page);
 });
 
+const toiIndiaNewsSection = 'https://timesofindia.indiatimes.com/india';
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiIndiaNewsSection, { waitUntil: 'domcontentloaded' });
+  await indiaScrap(page);
+});
 
 
 
