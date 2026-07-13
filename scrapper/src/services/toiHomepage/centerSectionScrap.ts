@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import articleScrapper from "./articleScrapper";
+import articleScrapper from "../articleScrapper";
 
 export default async function centerSectionScrap(page: Page) {
   const hrefs = await page.evaluate(() => {

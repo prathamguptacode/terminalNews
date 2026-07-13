@@ -14,7 +14,7 @@ export default async function articleScrapper({ page, rank, position, source, hr
     }
     return { title: titleElm.innerText, content: contentElm.innerText }
   })
-  if (newsArticle.title === "") {
+  if (newsArticle.title === "" || newsArticle.content === "") {
     return console.log(`Unable to scrap ${href}`)
   }
   //two casese either news not there or update news rank

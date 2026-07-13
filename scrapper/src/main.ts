@@ -3,11 +3,19 @@ import env from "@/configs/env"
 import mongoose from "mongoose";
 import { Cluster } from 'puppeteer-cluster';
 import { Page } from 'puppeteer';
-import centerSectionScrap from './services/centerSectionScrap';
-import leftSectionScrap from './services/leftSectionScap';
-import techrowScrap from './services/techrowScrap';
-import entertainmentScrap from './services/entertainmentScrap';
-import crimeScrap from './services/crimeScrap';
+import centerSectionScrap from './services/toiHomepage/centerSectionScrap';
+import leftSectionScrap from './services/toiHomepage/leftSectionScap';
+import techrowScrap from './services/toiHomepage/techrowScrap';
+import entertainmentScrap from './services/toiHomepage/entertainmentScrap';
+import crimeScrap from './services/toiHomepage/crimeScrap';
+import worldrowScrap from './services/toiHomepage/worldRowScrap';
+import fifaScrap from './services/toiHomepage/fifaScrap';
+import sportsScrap from './services/toiHomepage/sportsScrap';
+import legalScrap from './services/toiHomepage/legalScrap';
+import trendingScrap from './services/toiHomepage/trendingScrap';
+import businessrowScrap from './services/toiHomepage/businessrowScrap';
+import educationScrap from './services/toiHomepage/educationScrap';
+import techScrap from './services/toiHomepage/techScrap';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -19,12 +27,12 @@ try {
 
 const cluster = await Cluster.launch({
   concurrency: Cluster.CONCURRENCY_PAGE,
-  maxConcurrency: 3,
+  maxConcurrency: 5,
   monitor: true,
   retryLimit: 2,
   retryDelay: 2000,
   puppeteerOptions: {
-    headless: false,
+    headless: true,
     defaultViewport: null
   }
 })
@@ -50,6 +58,45 @@ cluster.queue(async ({ page }: { page: Page }) => {
   await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
   await crimeScrap(page);
 });
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await worldrowScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await fifaScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await fifaScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: "domcontentloaded" })
+  await sportsScrap(page)
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await legalScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await trendingScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await businessrowScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await educationScrap(page);
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
+  await techScrap(page);
+});
+
+
+
 
 
 await cluster.idle();
