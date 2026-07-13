@@ -18,6 +18,8 @@ import educationScrap from './services/toiHomepage/educationScrap';
 import techScrap from './services/toiHomepage/techScrap';
 import indiaScrap from './services/indiaPage/indiaScrap';
 import worldNewsScrapper from './services/worldNews/worldScrapper';
+import businessNewsScrapper from './services/businessNews/businessNewsScrapper';
+import businessHeroScrap from './services/businessNews/businessHeroScrapper';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -29,7 +31,7 @@ try {
 
 const cluster = await Cluster.launch({
   concurrency: Cluster.CONCURRENCY_PAGE,
-  maxConcurrency: 5,
+  maxConcurrency: 10,
   monitor: true,
   retryLimit: 2,
   retryDelay: 2000,
@@ -144,6 +146,36 @@ cluster.queue(async ({ page }: { page: Page }) => {
   // popular world new section 
   await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(28) a`, postion: "popularWorldNews" })
 });
+
+const toiBusinessPage = 'https://timesofindia.indiatimes.com/business';
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: 'domcontentloaded' });
+  await businessHeroScrap(page)
+});
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="ind_biz_news"] a`, postion: "indiaBusiness" })
+})
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="int_biz_news"] a`, postion: "internationBusiness" })
+})
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="corporatenews"] a`, postion: "corporateNews" })
+})
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="economynews"] a`, postion: "economyNews" })
+})
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="cryptonews"] a`, postion: "cryptoNews" })
+})
+cluster.queue(async ({ page }: { page: Page }) => {
+  await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
+  await businessNewsScrapper({ page, selector: `[data-section="aviationnews"] a`, postion: "aviationNews" })
+})
 
 
 
