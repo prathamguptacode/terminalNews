@@ -22,13 +22,13 @@ export default async function hindu() {
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-    await hinduScrap({ page, selector: "section:nth-child(30) .title>a", postion: "editorSection" })
+    await hinduScrap({ page, selector: "section:nth-child(26) .title>a", postion: "editorSection" })
   })
   const hinduWorldUrl = "https://www.thehindu.com/news/international/"
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduWorldUrl, { waitUntil: "domcontentloaded" })
-    await page.waitForSelector("body > section:nth-child(23)")
-    await hinduScrap({ page, selector: "body > section:nth-child(23) .title>a", postion: "worldNews" })
+    await page.waitForSelector("body > section:nth-child(24) .title>a ")
+    await hinduScrap({ page, selector: "body > section:nth-child(24) .title>a ", postion: "worldNews" })
   })
 
 

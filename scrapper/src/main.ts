@@ -5,6 +5,7 @@ import toiScrapper from './services/toi/toi';
 import hindu from './services/th/hindu';
 import indiaExpress from './services/ie/expressScrapper';
 import hindustanTimes from './services/ht/hindustanTimeScrapper';
+import ranker from './services/ranker/ranker';
 
 try {
   await mongoose.connect(env.DB_URL)
@@ -20,6 +21,7 @@ await toiScrapper()
 await hindu()
 await indiaExpress()
 await hindustanTimes()
+await ranker()
 
 await mongoose.disconnect();
 
