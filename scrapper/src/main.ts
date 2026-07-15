@@ -23,5 +23,5 @@ await indiaExpress()
 await hindustanTimes()
 await ranker()
 
-await mongoose.disconnect();
+await mongoose.disconnect()
 

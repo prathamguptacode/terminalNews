@@ -12,7 +12,11 @@ const articleSchema = new mongoose.Schema(
       required: true
     },
     board: {
-      type: [{ rank: { type: Number, required: true }, position: { type: String, required: true, }, updatedAt: { type: Date, required: true } }],
+      type: [{
+        rank: { type: Number, required: true },
+        position: { type: String, required: true },
+        updatedAt: { type: Date, required: true }
+      }],
       required: true
     },
     origin: {

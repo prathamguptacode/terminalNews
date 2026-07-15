@@ -17,7 +17,7 @@ export default async function articleScrapper({ page, rank, position, source, hr
   if (newsArticle.title === "" || newsArticle.content === "") {
     return console.log(`Unable to scrap ${href}`)
   }
-  //two casese either news not there or update news rank
+  //two cases, either news is not there or update news rank
   const oldArticle = await articleModel.findOne({ title: newsArticle.title })
   if (oldArticle === null) {
     const article = new articleModel({
