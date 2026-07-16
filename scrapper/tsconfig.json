@@ -10,9 +10,13 @@
         "sourceMap": true,
         "noEmitOnError": true,
         "paths": {
-            "@/*":["./src/*"]
+            "@/*": [
+                "./src/*"
+            ]
         },
-        "types": ["node"]
+        "types": [
+            "node"
+        ]
     },
     "tsc-alias": {
         "resolveFullPaths": true,

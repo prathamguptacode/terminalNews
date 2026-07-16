@@ -1,4 +1,4 @@
-import articleModel from "@/models/articleModel";
+import ScrapArticle from "@/models/ScrapArticle";
 import { Page } from "puppeteer";
 
 export default async function articleScrapper({ page, rank, position, source, href }: { page: Page, rank: number, position: string, source: string, href: string }) {
@@ -17,35 +17,35 @@ export default async function articleScrapper({ page, rank, position, source, hr
   if (newsArticle.title === "" || newsArticle.content === "") {
     return console.log(`Unable to scrap ${href}`)
   }
-  //two casese either news not there or update news rank
-  const oldArticle = await articleModel.findOne({ title: newsArticle.title })
+  //two cases, either news is not there or update news rank
+  const oldArticle = await ScrapArticle.findOne({ title: newsArticle.title })
   if (oldArticle === null) {
-    const article = new articleModel({
+    const article = new ScrapArticle({
       title: newsArticle.title,
       content: newsArticle.content,
       source: source,
-      board: [{ rank: rank, position: position, updatedAt: Date.now() }]
+      sections: [{ rank: rank, position: position, updatedAt: Date.now() }]
     })
     await article.save()
     return
   }
-  await articleModel.updateOne(
+  await ScrapArticle.updateOne(
     { _id: oldArticle._id },
     {
       $pull:
       {
-        board:
+        sections:
         {
           position: position
         }
       }
     }
   )
-  await articleModel.updateOne(
+  await ScrapArticle.updateOne(
     { _id: oldArticle._id },
     {
       $push: {
-        board:
+        sections:
         {
           position: position,
           rank: rank,
