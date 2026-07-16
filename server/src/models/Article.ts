@@ -1,3 +1,4 @@
+import { ARTICLE_SECTIONS } from "@/constants";
 import mongoose from "mongoose";
 
 const articleSchema = new mongoose.Schema(
@@ -11,17 +12,22 @@ const articleSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    board: {
+    sections: {
       type: [{
         rank: { type: Number, required: true },
-        position: { type: String, required: true },
+        name: {
+          type: String,
+          enum: ARTICLE_SECTIONS,
+          required: true
+        },
         updatedAt: { type: Date, required: true }
       }],
-      required: true
+      required: true,
+      _id: false
     },
     origin: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "scraparticles"
+      ref: "ScrapArticle"
     }
   },
   {
@@ -29,5 +35,7 @@ const articleSchema = new mongoose.Schema(
   }
 )
 
-export default mongoose.model("articles", articleSchema)
+export default mongoose.model("Article", articleSchema)
+
+//There should be a possible improvement to the issue of repitition in schema/data ?
 

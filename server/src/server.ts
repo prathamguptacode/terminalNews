@@ -1,18 +1,31 @@
 import 'dotenv/config'
 import express from 'express'
+import cors from 'cors'
+
+
 import { connectToMongoDB } from './config/mongoDB'
 import responseHandler from './middlewares/responseHandler'
 import errorHandler from './middlewares/errorHandler'
 import asyncHandler from './middlewares/asyncHandler'
-import articleModel from './models/articleModel'
+
+import Article from './models/Article'
 import { isObjectIdOrHexString } from 'mongoose'
-import { z } from 'zod'
+
+import articleRoutes from './routes/articleRoutes'
+
 
 
 const app = express()
 
-
+app.use(express.json())
+app.use(cors({
+    origin: 'localhost:5173',
+    credentials: true
+}))
 app.use(responseHandler)
+
+
+app.use('/api/articles', articleRoutes)
 
 app.get('/news', asyncHandler(async (req, res) => {
     const MIN_LIMIT = 5
@@ -27,31 +40,23 @@ app.get('/news', asyncHandler(async (req, res) => {
     }
 
     if (!isObjectIdOrHexString(cursor)) searchQuery = {}
-    const newsArticles = await articleModel.find(searchQuery).limit(limit + 1)
+    const newsArticles = await Article.find(searchQuery).limit(limit + 1)
     const hasNextPage = newsArticles.length > limit
     hasNextPage && newsArticles.pop()
     const nextCursor = newsArticles[newsArticles.length - 1].id
-    const hasPrevPage = isObjectIdOrHexString(cursor) && await articleModel.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
+    const hasPrevPage = isObjectIdOrHexString(cursor) && await Article.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
     return res.success(200, {
         pagination: { nextCursor, hasNextPage, hasPrevPage, prevCursor: cursor },
         newsArticles
     })
 }))
 
-app.get('/news/:articleId', asyncHandler(async (req, res) => {
-    const paramData = z.object({ articleId: z.string() }).safeParse(req.params)
-    if (!paramData.success) return res.fail(404, "NOT_FOUND", "Article with given id was not found")
-
-    const { articleId } = paramData.data
-    const article = await articleModel.findById(articleId)
-
-    return res.success(200, { article })
-}))
 
 
 app.use(errorHandler)
 
 connectToMongoDB()
+
 
 app.listen(8080, () => {
     console.log(`Listening on port ${8080}`)

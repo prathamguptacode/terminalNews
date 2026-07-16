@@ -1,6 +1,7 @@
+import { ARTICLE_SECTIONS } from "@/constants";
 import mongoose from "mongoose";
 
-const articleSchema = new mongoose.Schema(
+const scrapArticleSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -15,13 +16,18 @@ const articleSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    board: {
+    sections: {
       type: [{
         rank: { type: Number, required: true },
-        position: { type: String, required: true },
+        name: {
+          type: String,
+          enum: ARTICLE_SECTIONS,
+          required: true
+        },
         updatedAt: { type: Date, required: true }
       }],
-      required: true
+      required: true,
+      _id: false
     },
     scan: {
       type: Boolean,
@@ -33,4 +39,4 @@ const articleSchema = new mongoose.Schema(
   }
 )
 
-export default mongoose.model("scrapArticles", articleSchema)
+export default mongoose.model("ScrapArticle", scrapArticleSchema, 'scrap_articles')
