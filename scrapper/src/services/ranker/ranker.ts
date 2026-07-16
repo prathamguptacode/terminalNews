@@ -1,12 +1,12 @@
-import articleModel from "@/models/articleModel";
-import productionNews from "@/models/productionNews";
+import ScrapArticle from "@/models/ScrapArticle";
+import Article from "@/models/Article";
 
 export default async function ranker() {
-  const news = await productionNews.find().select("_id origin") // Assume n results
+  const news = await Article.find().select("_id origin") // Assume n results
   for (const elm of news) { // Therefore n iterations
     //Every iteration,
-    const board = await articleModel.findById(elm.origin).select("board") // Fetch one board
-    await productionNews.updateOne({ _id: elm._id }, { board: board?.board }) // Update one prodNews after refinding it
+    const sections = await ScrapArticle.findById(elm.origin).select("sections") // Fetch one sections
+    await Article.updateOne({ _id: elm._id }, { sections: sections?.sections }) // Update one prodNews after refinding it
 
     //Therefore, every iteration, we find 2 things , and update one (very RAW info)
   }
