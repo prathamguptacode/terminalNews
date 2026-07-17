@@ -4,11 +4,12 @@ import { RequestHandler } from "express";
 import { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
 
+const articlesBySectionSchema = z.object({
+    sectionName: z.string()
+})
+
 export const fetchArticlesBySection: RequestHandler = async (req, res) => {
-    const paramSchema = z.object({
-        sectionName: z.string()
-    })
-    const parsedData = paramSchema.safeParse(req.params)
+    const parsedData = articlesBySectionSchema.safeParse(req.params)
     if (!parsedData.success || !ARTICLE_SECTIONS.includes(parsedData.data.sectionName)) return res.fail(404, "NOT_FOUND", "News section does not exist")
 
 
@@ -36,11 +37,12 @@ export const fetchArticlesBySection: RequestHandler = async (req, res) => {
     })
 }
 
+const articleParamsSchema = z.object({
+    articleId: z.string()
+})
+
 export const fetchArticle: RequestHandler = async (req, res) => {
-    const paramSchema = z.object({
-        articleId: z.string()
-    })
-    const parsedData = paramSchema.safeParse(req.params)
+    const parsedData = articleParamsSchema.safeParse(req.params)
     if (!parsedData.success) return res.fail(404, "NOT_FOUND", "This article does not exist")
 
     const { articleId } = parsedData.data
