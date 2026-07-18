@@ -20,12 +20,12 @@ export default async function hindustanTimes() {
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(url, { waitUntil: "domcontentloaded" })
     await page.waitForSelector(".topRow")
-    await hindustanScrap({ page, selector: ".topRow a.imgWrap", postion: "heroSection" })
+    await hindustanScrap({ page, selector: ".topRow a.imgWrap", name: "heroSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(url, { waitUntil: "domcontentloaded" })
     await page.waitForSelector(".bottomRow")
-    await hindustanScrap({ page, selector: ".bottomRow a.sliderThumb", postion: "leftSection" })
+    await hindustanScrap({ page, selector: ".bottomRow a.sliderThumb", name: "leftSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(url, { waitUntil: "domcontentloaded" })

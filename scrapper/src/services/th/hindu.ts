@@ -18,17 +18,17 @@ export default async function hindu() {
   const hinduUrl = "https://www.thehindu.com/"
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-    await hinduScrap({ page, selector: ".top-section .title>a", postion: "heroSection" })
+    await hinduScrap({ page, selector: ".top-section .title>a", name: "heroSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-    await hinduScrap({ page, selector: "section:nth-child(26) .title>a", postion: "editorSection" })
+    await hinduScrap({ page, selector: "section:nth-child(26) .title>a", name: "editorSection" })
   })
   const hinduWorldUrl = "https://www.thehindu.com/news/international/"
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduWorldUrl, { waitUntil: "domcontentloaded" })
     await page.waitForSelector("body > section:nth-child(24) .title>a ")
-    await hinduScrap({ page, selector: "body > section:nth-child(24) .title>a ", postion: "worldNews" })
+    await hinduScrap({ page, selector: "body > section:nth-child(24) .title>a ", name: "worldNews" })
   })
 
 

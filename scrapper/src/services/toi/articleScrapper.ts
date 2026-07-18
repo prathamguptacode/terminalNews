@@ -1,7 +1,7 @@
 import ScrapArticle from "@/models/ScrapArticle";
 import { Page } from "puppeteer";
 
-export default async function articleScrapper({ page, rank, position, source, href }: { page: Page, rank: number, position: string, source: string, href: string }) {
+export default async function articleScrapper({ page, rank, name, source, href }: { page: Page, rank: number, name: string, source: string, href: string }) {
   // i dont know if it hits timeout then will cluster will rerun it(Scale depends)
   await page.goto(href, { waitUntil: "domcontentloaded" })
   const newsArticle = await page.evaluate(() => {
@@ -24,7 +24,7 @@ export default async function articleScrapper({ page, rank, position, source, hr
       title: newsArticle.title,
       content: newsArticle.content,
       source: source,
-      sections: [{ rank: rank, position: position, updatedAt: Date.now() }]
+      sections: [{ rank: rank, name: name, updatedAt: Date.now() }]
     })
     await article.save()
     return
@@ -36,7 +36,7 @@ export default async function articleScrapper({ page, rank, position, source, hr
       {
         sections:
         {
-          position: position
+          name: name
         }
       }
     }
@@ -47,7 +47,7 @@ export default async function articleScrapper({ page, rank, position, source, hr
       $push: {
         sections:
         {
-          position: position,
+          name: name,
           rank: rank,
           updatedAt: Date.now()
         }
