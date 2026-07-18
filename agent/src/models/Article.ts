@@ -28,6 +28,10 @@ const articleSchema = new mongoose.Schema(
     origin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ScrapArticle"
+    },
+    image: {
+      type: String,
+      required: true
     }
   },
   {
