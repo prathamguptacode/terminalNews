@@ -1,6 +1,6 @@
 # Suggestions
 
-## Major - Improvement in updation logic for position/rank
+## Major - Improvement in updation logic for name/rank of section
 
  Instead of $pull and $push awaited operations , we can simply use [Updating Embedded Arrays - MongoDB](https://www.mongodb.com/docs/drivers/node/current/crud/update/embedded-arrays/)
 

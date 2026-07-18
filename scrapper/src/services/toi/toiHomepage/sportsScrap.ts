@@ -10,7 +10,7 @@ export default async function sportsScrap(page: Page) {
   })
   let i = 1
   for (const elm of hrefs) {
-    await articleScrapper({ page, href: elm, source: "TOI", position: "sportsSection", rank: i })
+    await articleScrapper({ page, href: elm, source: "TOI", name: "sportsSection", rank: i })
     i++
   }
 }

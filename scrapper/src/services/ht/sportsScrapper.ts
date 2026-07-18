@@ -16,7 +16,7 @@ export default async function sportsHindustan({ page }: { page: Page }) {
   })
   let i = 1
   for (const elm of hrefs) {
-    await articleScrapper({ page, href: elm, source: "hindustanTimes", position: "sportsNews", rank: i })
+    await articleScrapper({ page, href: elm, source: "hindustanTimes", name: "sportsNews", rank: i })
     i++
   }
 }

@@ -1,9 +1,5 @@
 # ISSUES (Major and Minor)
 
-## Very Minor
-
-Spelling mistake in ./scrapper for position ( currently used word is postion ).
-
 ## Minor
 
 Weak typechecking - Eg: ./scrapper/src/services/toi/worldNews/worldScrapper.ts --> line 6 --> it is assumed that anchors will always be a NodeList , that too of HTMLAnchorElements, which is not necessary.

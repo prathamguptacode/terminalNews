@@ -10,7 +10,7 @@ export default async function legalScrap(page: Page) {
   })
   let i = 1
   for (const elm of hrefs) {
-    await articleScrapper({ page, href: elm, source: "TOI", position: "legalSection", rank: i })
+    await articleScrapper({ page, href: elm, source: "TOI", name: "legalSection", rank: i })
     i++
   }
 }

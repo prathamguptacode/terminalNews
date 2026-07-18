@@ -14,7 +14,7 @@ export default async function businessHeroScrap(page: Page) {
   })
   let i = 1
   for (const elm of hrefs) {
-    await articleScrapper({ page, href: elm, source: "TOI", position: "businessNews", rank: i })
+    await articleScrapper({ page, href: elm, source: "TOI", name: "businessNews", rank: i })
     i++
   }
 }

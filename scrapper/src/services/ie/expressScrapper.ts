@@ -19,17 +19,17 @@ export default async function indiaExpress() {
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(expressUrl, { waitUntil: "domcontentloaded" })
     await page.waitForSelector("#home-main-content > div:nth-child(3)")
-    await expressScrap({ page, selector: "#home-main-content > div:nth-child(3) h1>a", postion: "heroSection" })
+    await expressScrap({ page, selector: "#home-main-content > div:nth-child(3) h1>a", name: "heroSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(expressUrl, { waitUntil: "domcontentloaded" })
     await page.waitForSelector("#home-main-content > div:nth-child(3)")
-    await expressScrap({ page, selector: "#home-main-content > div:nth-child(3) h2>a", postion: "leftSection" })
+    await expressScrap({ page, selector: "#home-main-content > div:nth-child(3) h2>a", name: "leftSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(expressUrl, { waitUntil: "domcontentloaded" })
     await page.waitForSelector("#home-main-content > div:nth-child(5)")
-    await expressScrap({ page, selector: "#home-main-content > div:nth-child(5) h3>a", postion: "leftSection" })
+    await expressScrap({ page, selector: "#home-main-content > div:nth-child(5) h3>a", name: "leftSection" })
   })
 
   await cluser.idle()

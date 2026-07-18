@@ -10,7 +10,7 @@ export default async function trendingScrap(page: Page) {
   })
   let i = 1
   for (const elm of hrefs) {
-    await articleScrapper({ page, href: elm, source: "TOI", position: "trendingSection", rank: i })
+    await articleScrapper({ page, href: elm, source: "TOI", name: "trendingSection", rank: i })
     i++
   }
 }
