@@ -3,6 +3,7 @@ import Article from "@/models/Article";
 import { RequestHandler } from "express";
 import { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
+import axios, { isAxiosError } from "axios"
 
 const articlesBySectionSchema = z.object({
     sectionName: z.string()
@@ -50,4 +51,28 @@ export const fetchArticle: RequestHandler = async (req, res) => {
     const article = await Article.findById(articleId)
 
     return res.success(200, { article })
+}
+
+
+export const fetchImage: RequestHandler = async (req, res) => {
+    const id = req.params.id
+    const width = req.query.width
+    if (typeof id != "string") {
+        return res.status(400).json({ message: "Something went wrong" })
+    }
+    let url = `http://localhost:3080/file/${id}`
+    if (typeof width == "string") {
+        url += `?width=${width}`
+    }
+    try {
+        const data = await axios.get(url, { responseType: "arraybuffer" })
+        const contentType = data.headers['content-type']?.toString()
+        res.set("Content-Type", contentType)
+        res.send(data.data)
+    } catch (error) {
+        if (isAxiosError(error)) {
+            return res.status(error.status || 500).json({ message: "Something went wrong" })
+        }
+        res.status(500).json({ message: "Something went wrong" })
+    }
 }
