@@ -13,24 +13,6 @@ await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).ca
   process.exit(1)
 })
 
-const imgPrompt = `
-Create a **news-style editorial illustration** for the following article.
-
-**Requirements:**
-
-* Produce a **digital illustration, sketch, or vector-style artwork**, **not a real photograph**.
-* The illustration should be suitable as a **premium news article header image**.
-* Convey the seriousness of the event without showing graphic injuries, blood, burned bodies, or identifiable victims.
-* Focus on the scene, atmosphere, emergency response, and consequences rather than shock value.
-* Use muted, realistic colors with a professional editorial aesthetic.
-* Do not include logos, watermarks, text, or branding.
-** Dont include any text on the image. **
-
-**Style Keywords:**
-editorial illustration, newspaper artwork, digital painting, realistic sketch, muted colors, cinematic lighting, respectful, non-graphic, premium news media, high detail.
-
-**Article Context:**
-`
 
 const scrapNews = await ScrapArticle.find({ scan: false })
 for (const news of scrapNews) {
@@ -40,17 +22,28 @@ for (const news of scrapNews) {
       console.error(news.id, "Failed: Agent transformation returned undefined")
       continue
     }
-    const imageStr = await generateImageFromText({ prompt: imgPrompt + finalOutput.imageGenerationPrompt, articleId: news.id })
-    if (imageStr == undefined) {
-      throw new Error("image operation failed")
+    const imageQuery = []
+    for (const query of finalOutput.googleImageQuery) {
+      try {
+        const res = await axios.get(`http://localhost:8001/img/${query}`)
+        const link = res.data.link
+        const base64Response = await fetch(link)
+        const contentType = base64Response.headers.get("content-type");
+        if (contentType == null) {
+          throw new Error("Content type not found")
+        }
+        const blob = await base64Response.blob()
+        const formData = new FormData()
+        const file = new File([blob], `hello.${(contentType.split("/"))[1]}`, { type: contentType })
+        formData.append("upload", file)
+        const imageDb = await axios.post("http://localhost:3080/file", formData)
+        imageQuery.push(imageDb.data.fileName)
+      } catch (error) {
+        console.log("Something went wrong while getting image")
+        console.log(error)
+      }
     }
-    const base64Response = await fetch(`data:image/png;base64,${imageStr}`)
-    const blob = await base64Response.blob()
-    const file = new File([blob], "hello.png", { type: "image/png" })
-    const formData = new FormData()
-    formData.append("upload", file)
-    const imageDb = await axios.post("http://localhost:3080/file", formData)
-    const article = new Article({ title: finalOutput.title, content: finalOutput.content, sections: news.sections, origin: news._id, image: imageDb.data.fileName })
+    const article = new Article({ title: finalOutput.title, content: finalOutput.content, sections: news.sections, origin: news._id, image: imageQuery })
     await article.save()
     await ScrapArticle.updateOne({ _id: news.id }, { scan: true })
   } catch (error) {

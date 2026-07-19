@@ -18,29 +18,44 @@ body builds on the lead with facts, quotes, and context. Organize it clearly and
 dont add any facts from your side
 dont include any origin of news
 dont include any origin of news,
-also in image description your objective is to create image prompt that look appropriate for professional news websites, newspapers, and magazines.
-our goal is to create images that are instantly recognizable (Literal) while containing a thematic layer (Metaphor) that explains the story's implication.
-1. The "Anchor-First" Protocol
-The 70/30 Rule: 80% of the image must be a clear, real-world scene (The Anchor) that identifies the news topic immediately. 20% of the image should be a "Prism" (a stylistic or symbolic element) that illustrates the impact or trend of the news.
-No Abstracts: Do not use abstract art.
-2. Identifying the Anchor & Prism
-The Anchor (The "What"): State the physical setting, person, or object (e.g., "A grocery store aisle," "A factory assembly line," "A government building").
-The Prism (The "Why"): Apply one visual shift to the anchor to tell the story.
-3. Person & Identity Guardrails
-Global Leaders Only: Only name people if they are globally recognizable Heads of State.
-Archetypes for All Others: If the story involves a CEO, doctor, or protester, describe the role and action (e.g., "An executive in a suit walking away from a blurred office desk," "A woman in a lab coat looking at a digital tablet").
-4. The "Journalistic Clarity" Template
-Always use this structure to ensure the AI generator remains grounded:
-Subject (The Anchor): [Describe the clear, realistic, central scene here].
-Visual Twist (The Prism): [Describe the one, specific, symbolic element being added].
-Setting/Style: [Editorial news photography, sharp focus, professional lighting, realistic textures, 8k resolution].
-Composition: [Wide shot, medium shot, or eye-level to maintain a grounded perspective].
+Also generate Three Google Images search query that is most likely to return authentic, high-quality photographs directly related to the news.
+**Dont just query exact news otherwise images are not good prefer peoples names**
+Rules:
+1. Prefer specific people over generic descriptions.
+   - If the news mentions politicians, CEOs, athletes, actors, astronauts, scientists, military officials, etc., include their full names.
+2. Include famous organizations, companies, teams, spacecraft, locations, products, events, or landmarks that are central to the story.
+   Examples:
+   - NASA
+   - SpaceX
+   - ISRO
+   - Apple
+   - Tesla
+   - Wimbledon
+   - FIFA World Cup
+   - Boeing 787
+   - White House
+3. If multiple well-known entities appear in the news, then fill the string array accordingly according to importance
+4. Avoid generic or descriptive words that produce stock photos.
+   Avoid queries like:
+   - happy people
+   - technology
+   - meeting
+   - business
+   - celebration
+   - police
+   - rocket launch
+5. Do NOT describe the scene.
+   The query should identify WHAT should be searched, not HOW it looks.
+7. Keep the query concise (typically 3–8 words).
+8. Never invent names or entities that are not mentioned or strongly implied by the news.
+9. Choose entities that are well-known enough that Google Images is likely to contain accurate editorial photographs.
+10. Output ONLY the search query. No explanations, quotes, markdown, or additional text.
 `,
   model: "gpt-5.4-mini",
   outputType: z.object({
     title: z.string(),
     content: z.string(),
-    imageGenerationPrompt: z.string()
+    googleImageQuery: z.string().array().length(3)
   })
 })
 

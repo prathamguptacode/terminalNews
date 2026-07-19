@@ -4,9 +4,6 @@ import { RequestHandler } from "express";
 import { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
 import axios, { isAxiosError } from "axios"
-import stream from "stream"
-import console from 'console';
-import { string } from 'zod/v3';
 
 const articlesBySectionSchema = z.object({
     sectionName: z.string()

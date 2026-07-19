@@ -30,7 +30,7 @@ const articleSchema = new mongoose.Schema(
       ref: "ScrapArticle"
     },
     image: {
-      type: String,
+      type: [String],
       required: true
     }
   },
