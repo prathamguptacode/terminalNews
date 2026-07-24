@@ -14,6 +14,10 @@ await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).ca
   process.exit(1)
 })
 
+type bingT = {
+  hrefs: string[]
+}
+
 
 const scrapNews = await ScrapArticle.find({ scan: false })
 for (const news of scrapNews) {
@@ -24,31 +28,16 @@ for (const news of scrapNews) {
       continue
     }
     const imageQuery: string[] = []
-    // no ts support
-    const imgResponse = await client.responses.create({
-      model: "gpt-5.4-mini",
-      reasoning: { effort: "low" },
-      tools: [
-        {
-          type: "web_search",
-          search_content_types: ["image",],
-          image_settings: {
-            max_results: 3,
-            caption: true,
-          },
-        } as any,
-      ],
-      include: ["web_search_call.results"],
-      input: `give images for a news headline: ${finalOutput.title} (make sure images does not have any watermark)`,
-    });
-    imgResponse.output.forEach((e: any) => {
-      if (e.results && e.results.length > 0) {
-        e.results.forEach((r: any) => {
-          imageQuery.push(r.image_url);
-        })
-        // why we cant break the loop there
-      }
-    })
+    try {
+      const response = await axios.post<bingT>("http://localhost:2500/imgs", { q: finalOutput.bingImageQuery })
+      const hrefs = response.data.hrefs
+      hrefs.forEach(element => {
+        imageQuery.push(element)
+      });
+    } catch (error) {
+      console.log(error)
+      console.log("bing error")
+    }
     const imgUrls: string[] = []
     for (const link of imageQuery) {
       try {
