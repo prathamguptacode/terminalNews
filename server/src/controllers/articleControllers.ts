@@ -21,19 +21,28 @@ export const fetchArticlesBySection: RequestHandler = async (req, res) => {
     else limit = MIN_LIMIT
 
     let { cursor } = req.query
-    let searchQuery: Record<any, any> = {
+    let cursorFilterQuery: Record<any, any> = {
         _id: { $gt: cursor }
     }
 
-    if (!isObjectIdOrHexString(cursor)) searchQuery = {}
-    const articles = await Article.find({ 'sections.name': parsedData.data.sectionName, ...searchQuery }).limit(limit + 1)
+    if (!isObjectIdOrHexString(cursor)) cursorFilterQuery = {}
+
+    // filter by cursor,sectionName, and sectionLastUpdatedAt
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000
+    const articles = await Article.find({
+        'sections.name': parsedData.data.sectionName,
+        'sections.updatedAt': { $gte: Date.now() - maxNewsAgeInMilliseconds },
+        ...cursorFilterQuery
+    })
+        .limit(limit + 1)
+        .sort({ rank: -1 })
+
     const hasNextPage = articles.length > limit
     hasNextPage && articles.pop()
     const nextCursor = articles[articles.length - 1]?.id
-    const hasPrevPage = isObjectIdOrHexString(cursor) && await Article.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
+    // const hasPrevPage = isObjectIdOrHexString(cursor) && await Article.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
     return res.success(200, {
-        count: articles.length,
-        pagination: { nextCursor, hasNextPage, hasPrevPage, prevCursor: cursor },
+        pagination: { nextCursor, hasNextPage },
         articles
     })
 }
