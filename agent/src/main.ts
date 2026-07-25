@@ -5,7 +5,6 @@ import ScrapArticle from './models/ScrapArticle';
 import { run } from '@openai/agents';
 import agent from './agents/editor';
 import Article from "./models/Article"
-import { generateImageFromText } from './textToImage';
 import axios from 'axios';
 
 await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).catch(() => {

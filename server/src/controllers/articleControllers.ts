@@ -1,7 +1,7 @@
 import { ARTICLE_SECTIONS } from './../constants';
 import Article from "@/models/Article";
 import { RequestHandler } from "express";
-import { isObjectIdOrHexString } from 'mongoose';
+import mongoose, { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
 import axios, { isAxiosError } from "axios"
 
@@ -21,27 +21,67 @@ export const fetchArticlesBySection: RequestHandler = async (req, res) => {
     else limit = MIN_LIMIT
 
     let { cursor } = req.query
-    let cursorFilterQuery: Record<any, any> = {
-        _id: { $gt: cursor }
+    let cursorFilterQuery: Record<any, any> = {}
+
+    if (typeof cursor == 'string' && isObjectIdOrHexString(cursor)) cursorFilterQuery = {
+        _id: { $gt: new mongoose.Types.ObjectId(cursor) }
     }
 
-    if (!isObjectIdOrHexString(cursor)) cursorFilterQuery = {}
-
-    // filter by cursor,sectionName, and sectionLastUpdatedAt
-    const maxNewsAgeInMilliseconds = 15 * 60 * 1000
-    const articles = await Article.find({
-        'sections.name': parsedData.data.sectionName,
-        'sections.updatedAt': { $gte: Date.now() - maxNewsAgeInMilliseconds },
-        ...cursorFilterQuery
-    })
-        .limit(limit + 1)
-        .sort({ rank: -1 })
+    const maxNewsAgeInMilliseconds = 60 * 60 * 1000 ** 2
+    const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds)
+    const articles = await Article.aggregate([
+        {
+            $match: {
+                sections: {
+                    $elemMatch: {
+                        name: parsedData.data.sectionName,
+                        updatedAt: { $gte: maxAgeThreshold }
+                    }
+                },
+                ...cursorFilterQuery
+            }
+        },
+        {
+            $addFields: {
+                section: {
+                    $arrayElemAt: [{
+                        $filter: {
+                            input: "$sections",
+                            cond: {
+                                $and: [
+                                    { $eq: ["$$this.name", parsedData.data.sectionName] },
+                                    { $gte: ["$$this.updatedAt", maxAgeThreshold] }
+                                ]
+                            }
+                        }
+                    }, 0]
+                }
+            }
+        },
+        {
+            $sort: {
+                'section.rank': -1
+            }
+        },
+        {
+            $limit: limit + 1
+        },
+        {
+            $set: {
+                rank: '$section.rank'
+            }
+        },
+        {
+            $unset: ['sections', '__v', 'section']
+        }
+    ])
 
     const hasNextPage = articles.length > limit
     hasNextPage && articles.pop()
-    const nextCursor = articles[articles.length - 1]?.id
-    // const hasPrevPage = isObjectIdOrHexString(cursor) && await Article.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
+    const nextCursor = articles[articles.length - 1]?._id
+
     return res.success(200, {
+        count: articles.length,
         pagination: { nextCursor, hasNextPage },
         articles
     })
