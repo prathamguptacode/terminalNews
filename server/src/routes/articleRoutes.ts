@@ -1,4 +1,4 @@
-import { fetchArticle, fetchArticleIdsBySection, fetchArticlesByIds, fetchImage } from '@/controllers/articleControllers'
+import { decrementLikeController, fetchArticle, fetchArticleIdsBySection, fetchArticlesByIds, fetchImage, incrementLikeController } from '@/controllers/articleControllers'
 import asyncHandler from '@/middlewares/asyncHandler'
 import express from 'express'
 
@@ -13,6 +13,9 @@ else console.error("ERROR: Query Method is undefined")
 router.get('/image/:id', asyncHandler(fetchImage))
 
 router.get('/:articleId', asyncHandler(fetchArticle))
+
+router.patch('/:articleId/likes', asyncHandler(incrementLikeController))
+router.delete('/:articleId/likes', asyncHandler(decrementLikeController))
 
 
 export default router

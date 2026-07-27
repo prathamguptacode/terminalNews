@@ -133,3 +133,17 @@ export const fetchImage: RequestHandler = async (req, res) => {
         res.status(500).json({ message: "Something went wrong" })
     }
 }
+
+
+export const incrementLikeController: RequestHandler = async (req, res) => {
+    const { articleId } = req.params
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: 1 } })
+
+    return res.success()
+}
+export const decrementLikeController: RequestHandler = async (req, res) => {
+    const { articleId } = req.params
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: -1 } })
+
+    return res.success()
+}

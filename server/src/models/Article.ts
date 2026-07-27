@@ -32,6 +32,10 @@ const articleSchema = new mongoose.Schema(
     image: {
       type: [String],
       required: true
+    },
+    likes: {
+      type: Number,
+      default: 0
     }
   },
   {
