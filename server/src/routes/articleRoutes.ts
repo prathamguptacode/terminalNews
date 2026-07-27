@@ -1,11 +1,14 @@
-import { fetchArticle, fetchArticlesBySection, fetchImage } from '@/controllers/articleControllers'
+import { fetchArticle, fetchArticleIdsBySection, fetchArticlesByIds, fetchImage } from '@/controllers/articleControllers'
 import asyncHandler from '@/middlewares/asyncHandler'
 import express from 'express'
 
 const router = express.Router()
 
 
-router.get('/sections/:sectionName', asyncHandler(fetchArticlesBySection))
+router.get('/sections/:sectionName', asyncHandler(fetchArticleIdsBySection))
+
+if (router.query) router.query('/', asyncHandler(fetchArticlesByIds))
+else console.error("ERROR: Query Method is undefined")
 
 router.get('/image/:id', asyncHandler(fetchImage))
 
