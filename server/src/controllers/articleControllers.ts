@@ -22,7 +22,7 @@ export const fetchArticleIdsBySection: RequestHandler = async (req, res) => {
     if (typeof cursor == 'string') cursor = parseInt(cursor)
     if (typeof cursor != 'number') cursor = 0
 
-    const maxNewsAgeInMilliseconds = 15 * 60 * 1000
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2
     const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds)
 
     const articles = await Article.aggregate([
@@ -84,16 +84,9 @@ export const fetchArticlesByIds: RequestHandler = async (req, res) => {
     const parsedData = articleByIdsSchema.safeParse(req.body)
     if (!parsedData.success) return res.fail(400, "BAD_REQUEST", "Invalid ids")
 
-    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit + 1)
+    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt")
 
-    const hasNextPage = articles.length > limit
-    hasNextPage && articles.pop()
-    const nextCursor = articles[articles.length - 1]?._id
-
-    return res.success(200, {
-        pagination: { nextCursor, hasNextPage },
-        articles
-    })
+    return res.success(200, { articles })
 }
 const articleParamsSchema = z.object({
     articleId: z.string()
