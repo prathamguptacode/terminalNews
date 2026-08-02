@@ -6,8 +6,6 @@ import { run } from '@openai/agents';
 import agent from './agents/editor';
 import Article from "./models/Article"
 import axios from 'axios';
-import OpenAI from 'openai'
-const client = new OpenAI();
 
 await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).catch(() => {
   console.log("Something went wrong cannot connnect to DB");
