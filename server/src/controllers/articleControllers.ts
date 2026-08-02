@@ -5,39 +5,89 @@ import { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
 import axios, { isAxiosError } from "axios"
 
-const articlesBySectionSchema = z.object({
+const articleIdsBySectionSchema = z.object({
     sectionName: z.string()
 })
 
-export const fetchArticlesBySection: RequestHandler = async (req, res) => {
-    const parsedData = articlesBySectionSchema.safeParse(req.params)
+export const fetchArticleIdsBySection: RequestHandler = async (req, res) => {
+    const parsedData = articleIdsBySectionSchema.safeParse(req.params)
     if (!parsedData.success || !ARTICLE_SECTIONS.includes(parsedData.data.sectionName)) return res.fail(404, "NOT_FOUND", "News section does not exist")
 
 
-    const MIN_LIMIT = 5
-    const MAX_LIMIT = 50
-    let limit = req.query.limit as string | number
-    if (typeof limit == 'string') limit = Math.max(Math.min(parseInt(limit), MAX_LIMIT), MIN_LIMIT)
-    else limit = MIN_LIMIT
 
-    let { cursor } = req.query
-    let searchQuery: Record<any, any> = {
-        _id: { $gt: cursor }
-    }
+    const LIMIT = 200
+    let { cursor } = req.query as { cursor: string | number }
 
-    if (!isObjectIdOrHexString(cursor)) searchQuery = {}
-    const articles = await Article.find({ 'sections.name': parsedData.data.sectionName, ...searchQuery }).limit(limit + 1)
-    const hasNextPage = articles.length > limit
-    hasNextPage && articles.pop()
-    const nextCursor = articles[articles.length - 1]?.id
-    const hasPrevPage = isObjectIdOrHexString(cursor) && await Article.countDocuments({ _id: { $lte: cursor } }) > 0 // Could have a better way, not sure how though
+
+    if (typeof cursor == 'string') cursor = parseInt(cursor)
+    if (typeof cursor != 'number') cursor = 0
+
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2
+    const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds)
+
+    const articles = await Article.aggregate([
+        {
+            $match: {
+                sections: {
+                    $elemMatch: {
+                        updatedAt: { $gte: maxAgeThreshold },
+                        name: parsedData.data.sectionName,
+                        rank: { $gt: cursor }
+                    }
+                }
+            }
+        },
+        {
+            $addFields: {
+                section: {
+                    $arrayElemAt: [
+                        {
+                            $filter: {
+                                input: '$sections',
+                                cond: { $eq: ['$$this.name', parsedData.data.sectionName] }
+                            }
+                        }, 0]
+                }
+            }
+        },
+        {
+            $sort: { 'section.rank': 1 }
+        },
+        {
+            $limit: LIMIT
+        },
+        {
+            $project: {
+                _id: 1
+            }
+        }
+    ])
+
+    const articleIds = articles.map(a => a._id)
+
     return res.success(200, {
-        count: articles.length,
-        pagination: { nextCursor, hasNextPage, hasPrevPage, prevCursor: cursor },
-        articles
+        count: articleIds.length,
+        articleIds
     })
 }
 
+const articleByIdsSchema = z.object({ articleIds: z.array(z.string()) })
+
+export const fetchArticlesByIds: RequestHandler = async (req, res) => {
+    const MIN_LIMIT = 5
+    const MAX_LIMIT = 50
+
+    let { limit } = req.query as { limit: string | number }
+    if (typeof limit == 'string') limit = Math.max(Math.min(parseInt(limit), MAX_LIMIT), MIN_LIMIT)
+    else limit = MIN_LIMIT
+
+    const parsedData = articleByIdsSchema.safeParse(req.body)
+    if (!parsedData.success) return res.fail(400, "BAD_REQUEST", "Invalid ids")
+
+    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt")
+
+    return res.success(200, { articles })
+}
 const articleParamsSchema = z.object({
     articleId: z.string()
 })
@@ -75,4 +125,18 @@ export const fetchImage: RequestHandler = async (req, res) => {
         }
         res.status(500).json({ message: "Something went wrong" })
     }
+}
+
+
+export const incrementLikeController: RequestHandler = async (req, res) => {
+    const { articleId } = req.params
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: 1 } })
+
+    return res.success()
+}
+export const decrementLikeController: RequestHandler = async (req, res) => {
+    const { articleId } = req.params
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: -1 } })
+
+    return res.success()
 }
