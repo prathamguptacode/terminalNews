@@ -78,13 +78,15 @@ export const fetchArticlesByIds: RequestHandler = async (req, res) => {
     const MAX_LIMIT = 50
 
     let { limit } = req.query as { limit: string | number }
-    if (typeof limit == 'string') limit = Math.max(Math.min(parseInt(limit), MAX_LIMIT), MIN_LIMIT)
-    else limit = MIN_LIMIT
+    if (typeof limit !== 'string') limit = MIN_LIMIT
+    else limit = typeof parseInt(limit) === 'number' ? parseInt(limit) : MIN_LIMIT
+
+    limit = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, limit))
 
     const parsedData = articleByIdsSchema.safeParse(req.body)
     if (!parsedData.success) return res.fail(400, "BAD_REQUEST", "Invalid ids")
 
-    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt")
+    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt image")
 
     return res.success(200, { articles })
 }
@@ -128,15 +130,33 @@ export const fetchImage: RequestHandler = async (req, res) => {
 }
 
 
-export const incrementLikeController: RequestHandler = async (req, res) => {
+export const toggleLikeController: RequestHandler = async (req, res) => {
     const { articleId } = req.params
-    await Article.updateOne({ _id: articleId }, { $inc: { likes: 1 } })
+    const { isLiked } = req.body
 
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: isLiked ? 1 : -1 } })
     return res.success()
 }
-export const decrementLikeController: RequestHandler = async (req, res) => {
+export const toggleBookmarkController: RequestHandler = async (req, res) => {
     const { articleId } = req.params
-    await Article.updateOne({ _id: articleId }, { $inc: { likes: -1 } })
+    const { isBookmarked } = req.body
 
+    await Article.updateOne({ _id: articleId }, { $inc: { bookmarks: isBookmarked ? 1 : -1 } })
     return res.success()
+}
+
+export const fetchArticles: RequestHandler = async (req, res) => {
+    const { title } = req.query
+    if (typeof title !== 'string') return res.fail(400, "BAD_REQUEST", "Invalid body")
+
+    const MIN_LIMIT = 5
+    const MAX_LIMIT = 20
+    let { limit } = req.query as { limit: string | number }
+    if (typeof limit !== 'string') limit = MIN_LIMIT
+    else limit = typeof parseInt(limit) === 'number' ? parseInt(limit) : MIN_LIMIT
+
+    limit = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, limit))
+
+    const articles = await Article.find({ title: { $regex: title, $options: 'i' } }).limit(limit).select('title')
+    return res.success(200, { articles })
 }
