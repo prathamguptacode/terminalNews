@@ -157,6 +157,33 @@ export const fetchArticles: RequestHandler = async (req, res) => {
 
     limit = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, limit))
 
-    const articles = await Article.find({ title: { $regex: title, $options: 'i' } }).limit(limit).select('title')
+    const searchQuery = title ? {
+        $search: {
+            text: {
+                query: title,
+                path: 'title',
+                fuzzy: {}
+            }
+        }
+    } : {
+        $match: { title: { $regex: title } }
+    }
+
+    const articles = await Article.aggregate([
+        {
+            ...searchQuery
+        },
+        {
+            $sort: { updatedAt: -1 }
+        },
+        {
+            $limit: limit
+        },
+        {
+            $project: {
+                title: 1
+            }
+        }
+    ])
     return res.success(200, { articles })
 }
