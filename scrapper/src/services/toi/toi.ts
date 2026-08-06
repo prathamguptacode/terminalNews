@@ -6,7 +6,6 @@ import techrowScrap from "./toiHomepage/techrowScrap"
 import entertainmentScrap from "./toiHomepage/entertainmentScrap"
 import crimeScrap from "./toiHomepage/crimeScrap"
 import worldrowScrap from "./toiHomepage/worldRowScrap"
-import fifaScrap from "./toiHomepage/fifaScrap"
 import sportsScrap from "./toiHomepage/sportsScrap"
 import legalScrap from "./toiHomepage/legalScrap"
 import trendingScrap from "./toiHomepage/trendingScrap"
@@ -55,10 +54,6 @@ export default async function toiScrapper() {
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
     await worldrowScrap(page);
-  });
-  cluster.queue(async ({ page }: { page: Page }) => {
-    await page.goto(toiUrl, { waitUntil: 'domcontentloaded' });
-    await fifaScrap(page);
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiUrl, { waitUntil: "domcontentloaded" })
