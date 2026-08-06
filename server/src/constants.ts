@@ -1,17 +1,17 @@
 export const ARTICLE_SECTIONS = [
     'aviationNews', 'businessNews',
-    'businessRow', 'corporateNews',
+    'businessNews', 'corporateNews',
     'crimeSection', 'cryptoNews',
     'economyNews', 'editorSection',
     'educationSection', 'entertainmentSection',
-    'europeNews', 'fifaSection',
+    'europeNews',
     'heroSection', 'indiaBusiness',
     'indiaNews', 'internationBusiness',
     'leftSection', 'legalSection',
     'middleEastNews', 'otherWorldNews',
     'popularWorldNews', 'sportsNews',
-    'sportsSection', 'techSection',
+    'sportsNews', 'techSection',
     'trendingSection', 'ukNews',
     'usNews', 'worldNews',
-    'worldNewsRow'
+    'worldNews'
 ]
