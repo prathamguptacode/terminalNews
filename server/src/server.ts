@@ -17,7 +17,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({
-    methods: ['QUERY']
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'QUERY']
 }))
 app.use(responseHandler)
 

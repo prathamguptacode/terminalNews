@@ -1,9 +1,10 @@
-import { decrementLikeController, fetchArticle, fetchArticleIdsBySection, fetchArticlesByIds, fetchImage, incrementLikeController } from '@/controllers/articleControllers'
+import { fetchArticle, fetchArticleIdsBySection, fetchArticles, fetchArticlesByIds, fetchImage, toggleBookmarkController, toggleLikeController } from '@/controllers/articleControllers'
 import asyncHandler from '@/middlewares/asyncHandler'
 import express from 'express'
 
 const router = express.Router()
 
+router.get('/',asyncHandler(fetchArticles))
 
 router.get('/sections/:sectionName', asyncHandler(fetchArticleIdsBySection))
 
@@ -14,8 +15,8 @@ router.get('/image/:id', asyncHandler(fetchImage))
 
 router.get('/:articleId', asyncHandler(fetchArticle))
 
-router.patch('/:articleId/likes', asyncHandler(incrementLikeController))
-router.delete('/:articleId/likes', asyncHandler(decrementLikeController))
+router.put('/:articleId/likes', asyncHandler(toggleLikeController))
 
+router.put('/:articleId/bookmarks', asyncHandler(toggleBookmarkController))
 
 export default router
