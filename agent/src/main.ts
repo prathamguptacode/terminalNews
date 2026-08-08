@@ -6,7 +6,6 @@ import { run } from '@openai/agents';
 import agent from './agents/editor';
 import Article from "./models/Article"
 import axios from 'axios';
-import markdownToTxt from 'markdown-to-txt';
 
 await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).catch(() => {
   console.log("Something went wrong cannot connnect to DB");
@@ -56,7 +55,7 @@ for (const news of scrapNews) {
         console.log("Cannot upload image")
       }
     }
-    const article = new Article({ title: markdownToTxt(finalOutput.title), content: finalOutput.content, sections: news.sections, origin: news._id, image: imgUrls })
+    const article = new Article({ title: finalOutput.title, content: finalOutput.content, sections: news.sections, origin: news._id, image: imgUrls, tags: finalOutput.tags })
     await article.save()
     await ScrapArticle.updateOne({ _id: news.id }, { scan: true })
   } catch (error) {

@@ -14,7 +14,6 @@
     "@openai/agents": "^0.13.2",
     "axios": "^1.18.1",
     "dotenv": "^17.4.2",
-    "markdown-to-txt": "^2.0.1",
     "mongoose": "^9.7.4",
     "openai": "^6.48.0",
     "zod": "^4.4.3"
