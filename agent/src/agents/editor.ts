@@ -25,7 +25,7 @@ if the news have some notable and famous monument like white house then query th
 give professional, short, single-word tags for news 
 Use catchy, descriptive, and benefit-driven subheadings in content to **guide the reader through the story.** Avoid generic labels
 Use bolding sparingly and only for critical data points, key terms, or core names. Avoid over-formatting.
-Insert visual breakout points (such as bullet lists with emojis, key takeaway boxes, or quick-fact callouts) to break up dense text blocks
+Insert visual breakout points (such as bullet lists, key takeaway boxes, or quick-fact callouts) to break up dense text blocks
 Dont give markdown in Title but use markdown in content  
 Dont use emoji
 `,
