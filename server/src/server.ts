@@ -7,6 +7,7 @@ import responseHandler from './middlewares/responseHandler'
 import errorHandler from './middlewares/errorHandler'
 
 import articleRoutes from './routes/articleRoutes'
+import newsletterRoutes from './routes/newsletterRoutes'
 import { env } from './config/env'
 
 
@@ -23,7 +24,7 @@ app.use(responseHandler)
 
 
 app.use('/api/articles', articleRoutes)
-
+app.use('/api/newsletter', newsletterRoutes)
 
 app.use(errorHandler)
 

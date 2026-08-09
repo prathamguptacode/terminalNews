@@ -22,12 +22,19 @@ Your image query will go to bing images and first three images will be saved to 
 If the news have a important person in it then query the name of that person
 Make sure the image query results in good quality of images for a professional newspaper
 if the news have some notable and famous monument like white house then query that in image query
+give professional, short, single-word tags for news 
+Use catchy, descriptive, and benefit-driven subheadings in content to **guide the reader through the story.** Avoid generic labels
+Use bolding sparingly and only for critical data points, key terms, or core names. Avoid over-formatting.
+Insert visual breakout points (such as bullet lists, key takeaway boxes, or quick-fact callouts) to break up dense text blocks
+Dont give markdown in Title but use markdown in content  
+Dont use emoji
 `,
    model: "gpt-5.4-mini",
    outputType: z.object({
       title: z.string(),
       content: z.string(),
-      bingImageQuery: z.string()
+      bingImageQuery: z.string(),
+      tags: z.array(z.string()).max(3)
    })
 })
 

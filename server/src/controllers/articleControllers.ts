@@ -86,7 +86,7 @@ export const fetchArticlesByIds: RequestHandler = async (req, res) => {
     const parsedData = articleByIdsSchema.safeParse(req.body)
     if (!parsedData.success) return res.fail(400, "BAD_REQUEST", "Invalid ids")
 
-    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt image")
+    const articles = await Article.find({ _id: parsedData.data.articleIds }).limit(limit).select("title content updatedAt image tags")
 
     return res.success(200, { articles })
 }
