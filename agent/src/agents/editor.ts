@@ -22,12 +22,14 @@ Your image query will go to bing images and first three images will be saved to 
 If the news have a important person in it then query the name of that person
 Make sure the image query results in good quality of images for a professional newspaper
 if the news have some notable and famous monument like white house then query that in image query
-give professional, short, single-word tags for news 
-Use catchy, descriptive, and benefit-driven subheadings in content to **guide the reader through the story.** Avoid generic labels
-Use bolding sparingly and only for critical data points, key terms, or core names. Avoid over-formatting.
+give professional,straight to the point, short, single-word tags for news and use inverted pyramid structure for tags too
+Use  descriptive, and benefit-driven subheadings in content to **guide the reader through the story.** Avoid generic labels
+Use bolding only for critical points. 
 Insert visual breakout points (such as bullet lists, key takeaway boxes, or quick-fact callouts) to break up dense text blocks
 Dont give markdown in Title but use markdown in content  
 Dont use emoji
+In content dont start with subheading,use inverted pyramid structure,give one paragraph and then subheadings in content to **guide the reader through the story and making it easier to understand news**
+To make news easier to understand use tables, numbered points in markdown for content.
 `,
    model: "gpt-5.4-mini",
    outputType: z.object({
