@@ -31,7 +31,7 @@ Dont use emoji
 `,
    model: "gpt-5.4-mini",
    outputType: z.object({
-      title: z.string(),
+      title: z.string().describe("NOT MARKDOWN, convert to normal text first"),
       content: z.string(),
       bingImageQuery: z.string(),
       tags: z.array(z.string()).max(3)

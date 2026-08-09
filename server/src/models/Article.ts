@@ -47,6 +47,27 @@ const articleSchema = new mongoose.Schema(
   }
 )
 
+articleSchema.searchIndex({
+  name: 'default', definition: {
+    mappings: {
+      dynamic: false,
+      fields: {
+        title: [
+          {
+            type: "string"
+          },
+          {
+            type: "autocomplete"
+          },
+          {
+            type:'token'
+          }
+        ]
+      }
+    }
+  }
+})
+
 export default mongoose.model("Article", articleSchema)
 
 //There should be a possible improvement to the issue of repitition in schema/data ?

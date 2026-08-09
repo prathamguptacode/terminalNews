@@ -26,6 +26,7 @@ app.use(responseHandler)
 app.use('/api/articles', articleRoutes)
 app.use('/api/newsletter', newsletterRoutes)
 
+
 app.use(errorHandler)
 
 app.listen(env.PORT, () => {
