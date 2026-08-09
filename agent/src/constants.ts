@@ -1,6 +1,6 @@
 export const ARTICLE_SECTIONS = [
     'aviationNews', 'businessNews',
-    'businessNews', 'corporateNews',
+    'corporateNews',
     'crimeSection', 'cryptoNews',
     'economyNews', 'editorSection',
     'educationSection', 'entertainmentSection',
@@ -10,8 +10,7 @@ export const ARTICLE_SECTIONS = [
     'leftSection', 'legalSection',
     'middleEastNews', 'otherWorldNews',
     'popularWorldNews', 'sportsNews',
-    'sportsNews', 'techSection',
+    'techSection',
     'trendingSection', 'ukNews',
     'usNews', 'worldNews',
-    'worldNews'
 ]

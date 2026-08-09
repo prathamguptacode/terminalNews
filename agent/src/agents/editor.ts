@@ -22,10 +22,11 @@ Your image query will go to bing images and first three images will be saved to 
 If the news have a important person in it then query the name of that person
 Make sure the image query results in good quality of images for a professional newspaper
 if the news have some notable and famous monument like white house then query that in image query
+RETURN TITLE in normal text, not markdown
 `,
    model: "gpt-5.4-mini",
    outputType: z.object({
-      title: z.string(),
+      title: z.string().describe("NOT MARKDOWN, convert to normal text first"),
       content: z.string(),
       bingImageQuery: z.string()
    })

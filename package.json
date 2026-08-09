@@ -1,0 +1,23 @@
+{
+  "name": "terminalnews",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd server && clear && clear && npm run dev",
+    "scrapper": "cd scrapper && clear && clear && npm run dev",
+    "agent": "cd agent && clear && clear && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prathamguptacode/terminalNews.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/prathamguptacode/terminalNews/issues"
+  },
+  "homepage": "https://github.com/prathamguptacode/terminalNews#readme"
+}

@@ -32,12 +32,41 @@ const articleSchema = new mongoose.Schema(
     image: {
       type: [String],
       required: true
+    },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    bookmarks: {
+      type: Number,
+      default: 0
     }
   },
   {
     timestamps: true
   }
 )
+
+articleSchema.searchIndex({
+  name: 'default', definition: {
+    mappings: {
+      dynamic: false,
+      fields: {
+        title: [
+          {
+            type: "string"
+          },
+          {
+            type: "autocomplete"
+          },
+          {
+            type:'token'
+          }
+        ]
+      }
+    }
+  }
+})
 
 export default mongoose.model("Article", articleSchema)
 
