@@ -40,7 +40,11 @@ const articleSchema = new mongoose.Schema(
     bookmarks: {
       type: Number,
       default: 0
-    }
+    },
+    tags: {
+      type: [String],
+      required: true
+    },
   },
   {
     timestamps: true
@@ -60,7 +64,7 @@ articleSchema.searchIndex({
             type: "autocomplete"
           },
           {
-            type:'token'
+            type: 'token'
           }
         ]
       }
