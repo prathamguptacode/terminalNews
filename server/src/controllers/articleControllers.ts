@@ -163,7 +163,6 @@ export const fetchArticles: RequestHandler = async (req, res) => {
             text: {
                 query: title,
                 path: 'title',
-                fuzzy: {}
             }
         }
     } : {
