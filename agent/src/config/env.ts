@@ -1,7 +1,8 @@
 import { z } from "zod"
 
 const envSchema = z.object({
-  DB_URL: z.string()
+  DB_URL: z.string(),
+  IMAGE_DB_URL: z.string()
 })
 
 const val = envSchema.safeParse(process.env)

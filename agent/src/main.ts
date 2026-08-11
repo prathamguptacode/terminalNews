@@ -48,7 +48,7 @@ for (const news of scrapNews) {
         const formData = new FormData()
         const file = new File([blob], `hello.${(contentType.split("/"))[1]}`, { type: contentType })
         formData.append("upload", file)
-        const imgUrlRes = await axios.post("http://localhost:3080/file", formData)
+        const imgUrlRes = await axios.post(`${env.IMAGE_DB_URL}/file`, formData)
         imgUrls.push(imgUrlRes.data.fileName)
       } catch (error) {
         console.log(error)
