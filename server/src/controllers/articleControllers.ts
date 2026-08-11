@@ -4,6 +4,7 @@ import { RequestHandler } from "express";
 import { isObjectIdOrHexString } from 'mongoose';
 import { z } from 'zod'
 import axios, { isAxiosError } from "axios"
+import { env } from '@/config/env';
 
 const articleIdsBySectionSchema = z.object({
     sectionName: z.string()
@@ -112,7 +113,7 @@ export const fetchImage: RequestHandler = async (req, res) => {
     if (typeof id != "string") {
         return res.status(400).json({ message: "Something went wrong" })
     }
-    let url = `http://localhost:3080/file/${id}`
+    let url = `${env.IMAGE_DB_URL}/file/${id}`
     if (typeof width == "string") {
         url += `?width=${width}`
     }
