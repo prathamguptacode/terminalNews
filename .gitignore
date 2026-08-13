@@ -1,7 +1,6 @@
 .env
 node_modules/
 temp/
-dist/
 build/
 .DS_STORE
 upload/
