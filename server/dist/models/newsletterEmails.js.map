@@ -1,0 +1,1 @@
+{"version":3,"file":"newsletterEmails.js","sourceRoot":"","sources":["../../src/models/newsletterEmails.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,UAAU,CAAC;AAEhC,MAAM,qBAAqB,GAAG,IAAI,QAAQ,CAAC,MAAM,CAAC;IAChD,KAAK,EAAE,MAAM;CACd,EAAE;IACD,UAAU,EAAE,IAAI;CACjB,CAAC,CAAA;AAEF,eAAe,QAAQ,CAAC,KAAK,CAAC,kBAAkB,EAAE,qBAAqB,CAAC,CAAA"}
