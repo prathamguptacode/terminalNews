@@ -18,6 +18,6 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use(errorHandler);
 app.listen(env.PORT, () => {
-    console.log(`Listening on port ${env.PORT}`);
+    console.log(`Listening on port ${env.PORT} v1`);
 });
 //# sourceMappingURL=server.js.map
