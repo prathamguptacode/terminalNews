@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 const schema = z.object({
-  DB_URL: z.string()
+  DB_URL: z.string(),
+  DEV_DB_URL: z.string(),
+  NODE_ENV: z.string().default("DEVELOPEMENT")
 })
 
 const val = schema.safeParse(process.env)
