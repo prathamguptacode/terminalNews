@@ -7,7 +7,8 @@ import agent from './agents/editor';
 import Article from "./models/Article"
 import axios from 'axios';
 
-await mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).catch(() => {
+const DB_URL = (env.NODE_ENV === "PRODUCTION") ? env.DB_URL : env.DEV_DB_URL
+await mongoose.connect(DB_URL).then(() => console.log("Connected to DB")).catch(() => {
   console.log("Something went wrong cannot connnect to DB");
   process.exit(1)
 })
