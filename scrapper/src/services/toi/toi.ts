@@ -114,11 +114,6 @@ export default async function toiScrapper() {
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
-    // middle east news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(23) a`, name: "middleEastNews" })
-  });
-  cluster.queue(async ({ page }: { page: Page }) => {
-    await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // other world news section
     await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(25) a`, name: "otherWorldNews" })
   });

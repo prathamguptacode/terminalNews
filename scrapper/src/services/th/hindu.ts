@@ -20,15 +20,15 @@ export default async function hindu() {
     await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
     await hinduScrap({ page, selector: ".top-section .title>a", name: "heroSection" })
   })
-  cluser.queue(async ({ page }: { page: Page }) => {
-    await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-    await hinduScrap({ page, selector: "section:nth-child(26) .title>a", name: "editorSection" })
-  })
+  // cluser.queue(async ({ page }: { page: Page }) => {
+  //   await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
+  //   await hinduScrap({ page, selector: "section:nth-child(26) .title>a", name: "editorSection" })
+  // })
   const hinduWorldUrl = "https://www.thehindu.com/news/international/"
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(hinduWorldUrl, { waitUntil: "domcontentloaded" })
-    await page.waitForSelector("body > section:nth-child(24) .title>a ")
-    await hinduScrap({ page, selector: "body > section:nth-child(24) .title>a ", name: "worldNews" })
+    await page.waitForSelector("body > section:nth-child(28) .title>a ")
+    await hinduScrap({ page, selector: "body > section:nth-child(28) .title>a ", name: "worldNews" })
   })
 
 
