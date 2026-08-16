@@ -1,10 +1,10 @@
-import { fetchArticle, fetchArticleIdsBySection, fetchArticles, fetchArticlesByIds, fetchImage, toggleBookmarkController, toggleLikeController } from '@/controllers/articleControllers'
+import { fetchArticle, fetchArticleIdsBySection, fetchArticles, fetchArticlesByIds, fetchImage, nextBtn, prevBtn, toggleBookmarkController, toggleLikeController } from '@/controllers/articleControllers'
 import asyncHandler from '@/middlewares/asyncHandler'
 import express from 'express'
 
 const router = express.Router()
 
-router.get('/',asyncHandler(fetchArticles))
+router.get('/', asyncHandler(fetchArticles))
 
 router.get('/sections/:sectionName', asyncHandler(fetchArticleIdsBySection))
 
@@ -18,5 +18,9 @@ router.get('/:articleId', asyncHandler(fetchArticle))
 router.put('/:articleId/likes', asyncHandler(toggleLikeController))
 
 router.put('/:articleId/bookmarks', asyncHandler(toggleBookmarkController))
+
+router.get('/:articleId/next', asyncHandler(nextBtn))
+
+router.get('/:articleId/prev', asyncHandler(prevBtn))
 
 export default router

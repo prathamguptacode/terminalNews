@@ -187,3 +187,29 @@ export const fetchArticles: RequestHandler = async (req, res) => {
     ])
     return res.success(200, { articles })
 }
+
+
+export const nextBtn: RequestHandler = async (req, res) => {
+    const articleId = req.params.articleId
+    const article = await Article.findById(articleId).select('sections')
+    if (!article) return res.fail(404, "NOT_FOUND")
+    const rank = article.sections[0].rank
+    const name = article.sections[0].name
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2
+    const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds)
+    const newArticle = await Article.findOne({ "sections.name": name, "sections.rank": { $gt: rank }, updatedAt: { $gte: maxAgeThreshold }, }).select("id")
+    res.success(200, { article: newArticle })
+}
+
+
+export const prevBtn: RequestHandler = async (req, res) => {
+    const articleId = req.params.articleId
+    const article = await Article.findById(articleId).select('sections')
+    if (!article) return res.fail(404, "NOT_FOUND")
+    const rank = article.sections[0].rank
+    const name = article.sections[0].name
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2
+    const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds)
+    const newArticle = await Article.findOne({ "sections.name": name, "sections.rank": { $lt: rank }, updatedAt: { $gte: maxAgeThreshold }, }).select("id")
+    res.success(200, { article: newArticle })
+}
