@@ -141,9 +141,10 @@ export const fetchArticles = async (req, res) => {
     limit = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, limit));
     const searchQuery = title ? {
         $search: {
-            text: {
-                query: title,
+            autocomplete: {
+                query: title.trim(),
                 path: 'title',
+                tokenOrder: 'sequential'
             }
         }
     } : {
