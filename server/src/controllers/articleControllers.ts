@@ -160,9 +160,10 @@ export const fetchArticles: RequestHandler = async (req, res) => {
 
     const searchQuery = title ? {
         $search: {
-            text: {
-                query: title,
+            autocomplete: {
+                query: title.trim(),
                 path: 'title',
+                tokenOrder: 'sequential'
             }
         }
     } : {
@@ -185,5 +186,6 @@ export const fetchArticles: RequestHandler = async (req, res) => {
             }
         }
     ])
+
     return res.success(200, { articles })
 }
