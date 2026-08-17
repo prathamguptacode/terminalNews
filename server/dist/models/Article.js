@@ -44,7 +44,8 @@ const articleSchema = new mongoose.Schema({
         required: true
     },
 }, {
-    timestamps: true
+    timestamps: true,
+    autoSearchIndex: true
 });
 articleSchema.searchIndex({
     name: 'default', definition: {
