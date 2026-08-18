@@ -17,7 +17,7 @@ export const fetchArticleIdsBySection = async (req, res) => {
         cursor = parseInt(cursor);
     if (typeof cursor != 'number')
         cursor = 0;
-    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2;
+    const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2 ** 2;
     const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds);
     const articles = await Article.aggregate([
         {
