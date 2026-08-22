@@ -44,7 +44,8 @@ const articleSchema = new mongoose.Schema({
         required: true
     },
 }, {
-    timestamps: true
+    timestamps: true,
+    autoSearchIndex: true
 });
 articleSchema.searchIndex({
     name: 'default', definition: {
@@ -66,6 +67,7 @@ articleSchema.searchIndex({
         }
     }
 });
+articleSchema.index({ createdAt: 1 }, { expireAfterSeconds: 24 * 60 * 60 * 1000 });
 export default mongoose.model("Article", articleSchema);
 //There should be a possible improvement to the issue of repitition in schema/data ?
 //# sourceMappingURL=Article.js.map

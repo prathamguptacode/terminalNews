@@ -47,7 +47,8 @@ const articleSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true
+    timestamps: true,
+    autoSearchIndex: true
   }
 )
 
@@ -71,6 +72,8 @@ articleSchema.searchIndex({
     }
   }
 })
+
+articleSchema.index({ createdAt: 1 }, { expireAfterSeconds: 24 * 60 * 60 * 1000 })
 
 export default mongoose.model("Article", articleSchema)
 

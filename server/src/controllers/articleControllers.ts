@@ -20,7 +20,7 @@ export const fetchArticleIdsBySection: RequestHandler = async (req, res) => {
   if (typeof cursor == 'string') cursor = parseInt(cursor);
   if (typeof cursor != 'number') cursor = 0;
 
-  const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2;
+  const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** (2 ** 2);
   const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds);
 
   const articles = await Article.aggregate([
@@ -86,33 +86,37 @@ export const fetchArticlesByIds: RequestHandler = async (req, res) => {
   const parsedData = articleByIdsSchema.safeParse(req.body);
   if (!parsedData.success) return res.fail(400, 'BAD_REQUEST', 'Invalid ids');
 
-  let objectIdArray: mongoose.Types.ObjectId[] = []
+  let objectIdArray: mongoose.Types.ObjectId[] = [];
   try {
-    objectIdArray = parsedData.data.articleIds.map(e => new mongoose.Types.ObjectId(e))
+    objectIdArray = parsedData.data.articleIds.map((e) => new mongoose.Types.ObjectId(e));
   } catch {
-    return res.fail(400, "INVALID_ID")
+    return res.fail(400, 'INVALID_ID');
   }
   const articles = await Article.aggregate([
     {
       $match: {
-        _id: { $in: objectIdArray }
-      }
+        _id: { $in: objectIdArray },
+      },
     },
     {
       $addFields: {
-        sortOrder: { $indexOfArray: [objectIdArray, '$_id'] }
-      }
+        sortOrder: { $indexOfArray: [objectIdArray, '$_id'] },
+      },
     },
     {
-      $sort: { sortOrder: 1 }
+      $sort: { sortOrder: 1 },
     },
     {
       $project: {
-        title: 1, content: 1, updatedAt: 1, image: 1, tags: 1, sections: 1,
-      }
-    }
-  ])
-
+        title: 1,
+        content: 1,
+        updatedAt: 1,
+        image: 1,
+        tags: 1,
+        sections: 1,
+      },
+    },
+  ]);
 
   return res.success(200, { articles });
 };
@@ -183,16 +187,17 @@ export const fetchArticles: RequestHandler = async (req, res) => {
 
   const searchQuery = title
     ? {
-      $search: {
-        text: {
-          query: title,
-          path: 'title',
+        $search: {
+          autocomplete: {
+            query: title.trim(),
+            path: 'title',
+            tokenOrder: 'sequential',
+          },
         },
-      },
-    }
+      }
     : {
-      $match: { title: { $regex: title } },
-    };
+        $match: { title: { $regex: title } },
+      };
 
   const articles = await Article.aggregate([
     {
@@ -218,7 +223,7 @@ export const nextBtn: RequestHandler = async (req, res) => {
   const article = await Article.findById(articleId).select('sections');
   if (!article) return res.fail(404, 'NOT_FOUND');
   const reqName = req.query.name;
-  const name = typeof reqName === 'string' && reqName !== "" ? reqName : article.sections[0].name;
+  const name = typeof reqName === 'string' && reqName !== '' ? reqName : article.sections[0].name;
   let rank = 0;
   const BreakException = {};
   try {
@@ -264,4 +269,3 @@ export const nextBtn: RequestHandler = async (req, res) => {
     section: name,
   });
 };
-
