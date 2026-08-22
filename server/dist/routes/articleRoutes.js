@@ -1,4 +1,4 @@
-import { fetchArticle, fetchArticleIdsBySection, fetchArticles, fetchArticlesByIds, fetchImage, toggleBookmarkController, toggleLikeController } from '../controllers/articleControllers.js';
+import { fetchArticle, fetchArticleIdsBySection, fetchArticles, fetchArticlesByIds, fetchImage, nextBtn, toggleBookmarkController, toggleLikeController } from '../controllers/articleControllers.js';
 import asyncHandler from '../middlewares/asyncHandler.js';
 import express from 'express';
 const router = express.Router();
@@ -12,5 +12,6 @@ router.get('/image/:id', asyncHandler(fetchImage));
 router.get('/:articleId', asyncHandler(fetchArticle));
 router.put('/:articleId/likes', asyncHandler(toggleLikeController));
 router.put('/:articleId/bookmarks', asyncHandler(toggleBookmarkController));
+router.get('/:articleId/next', asyncHandler(nextBtn));
 export default router;
 //# sourceMappingURL=articleRoutes.js.map
