@@ -20,7 +20,7 @@ export const fetchArticleIdsBySection: RequestHandler = async (req, res) => {
   if (typeof cursor == 'string') cursor = parseInt(cursor);
   if (typeof cursor != 'number') cursor = 0;
 
-  const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** (2 ** 2);
+  const maxNewsAgeInMilliseconds = 24 * 60 * 60 * 1000;
   const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds);
 
   const articles = await Article.aggregate([
@@ -240,7 +240,7 @@ export const nextBtn: RequestHandler = async (req, res) => {
     }
   }
   const LIMIT = 1;
-  const maxNewsAgeInMilliseconds = 15 * 60 * 1000 ** 2;
+  const maxNewsAgeInMilliseconds = 24 * 60 * 60 * 1000;
   const maxAgeThreshold = new Date(Date.now() - maxNewsAgeInMilliseconds);
   const articles = await Article.aggregate([
     {
