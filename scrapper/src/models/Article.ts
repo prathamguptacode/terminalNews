@@ -73,7 +73,7 @@ articleSchema.searchIndex({
   }
 })
 
-articleSchema.index({ createdAt: 1 }, { expireAfterSeconds: 24 * 60 * 60 * 1000 })
+articleSchema.index({ updatedAt: 1 }, { expireAfterSeconds: 30 * 60 * 60 })
 
 export default mongoose.model("Article", articleSchema)
 
