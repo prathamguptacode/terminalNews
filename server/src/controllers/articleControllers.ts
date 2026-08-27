@@ -162,14 +162,14 @@ export const toggleLikeController: RequestHandler = async (req, res) => {
   const { articleId } = req.params;
   const { isLiked } = req.body;
 
-  await Article.updateOne({ _id: articleId }, { $inc: { likes: isLiked ? 1 : -1 } });
+  await Article.updateOne({ _id: articleId }, { $inc: { likes: isLiked ? 1 : -1 } }, { timestamps: false });
   return res.success();
 };
 export const toggleBookmarkController: RequestHandler = async (req, res) => {
   const { articleId } = req.params;
   const { isBookmarked } = req.body;
 
-  await Article.updateOne({ _id: articleId }, { $inc: { bookmarks: isBookmarked ? 1 : -1 } });
+  await Article.updateOne({ _id: articleId }, { $inc: { bookmarks: isBookmarked ? 1 : -1 } }, { timestamps: false });
   return res.success();
 };
 
@@ -187,17 +187,17 @@ export const fetchArticles: RequestHandler = async (req, res) => {
 
   const searchQuery = title
     ? {
-        $search: {
-          autocomplete: {
-            query: title.trim(),
-            path: 'title',
-            tokenOrder: 'sequential',
-          },
+      $search: {
+        autocomplete: {
+          query: title.trim(),
+          path: 'title',
+          tokenOrder: 'sequential',
         },
-      }
+      },
+    }
     : {
-        $match: { title: { $regex: title } },
-      };
+      $match: { title: { $regex: title } },
+    };
 
   const articles = await Article.aggregate([
     {
