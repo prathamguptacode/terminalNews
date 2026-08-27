@@ -150,13 +150,13 @@ export const fetchImage = async (req, res) => {
 export const toggleLikeController = async (req, res) => {
     const { articleId } = req.params;
     const { isLiked } = req.body;
-    await Article.updateOne({ _id: articleId }, { $inc: { likes: isLiked ? 1 : -1 } });
+    await Article.updateOne({ _id: articleId }, { $inc: { likes: isLiked ? 1 : -1 } }, { timestamps: false });
     return res.success();
 };
 export const toggleBookmarkController = async (req, res) => {
     const { articleId } = req.params;
     const { isBookmarked } = req.body;
-    await Article.updateOne({ _id: articleId }, { $inc: { bookmarks: isBookmarked ? 1 : -1 } });
+    await Article.updateOne({ _id: articleId }, { $inc: { bookmarks: isBookmarked ? 1 : -1 } }, { timestamps: false });
     return res.success();
 };
 export const fetchArticles = async (req, res) => {
