@@ -24,6 +24,7 @@ Make sure the image query results in good quality of images for a professional n
 if the news have some notable and famous monument like white house then query that in image query
 give professional,straight to the point, short, single-word tags for news and use inverted pyramid structure for tags too
 Use  descriptive, and benefit-driven subheadings in content to **guide the reader through the story.** Avoid generic labels
+Use ### for subheading
 Use bolding only for critical points. 
 Insert visual breakout points (such as bullet lists, key takeaway boxes, or quick-fact callouts) to break up dense text blocks
 Dont give markdown in Title but use markdown in content  
