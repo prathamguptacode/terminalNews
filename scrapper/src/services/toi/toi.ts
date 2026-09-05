@@ -95,32 +95,32 @@ export default async function toiScrapper() {
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // us news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(10) a`, name: "usNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(10) a`, name: "worldNews" })
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // uk news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(17) a`, name: "ukNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(17) a`, name: "worldNews" })
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // europe news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(19) a`, name: "europeNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(19) a`, name: "worldNews" })
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // middle east news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(23) a`, name: "middleEastNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(23) a`, name: "worldNews" })
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // other world news section
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(25) a`, name: "otherWorldNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(25) a`, name: "worldNews" })
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiWorldnewsPage, { waitUntil: 'domcontentloaded' });
     // popular world new section 
-    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(28) a`, name: "popularWorldNews" })
+    await worldNewsScrapper({ page, selector: `[data-type=in_view]:nth-child(28) a`, name: "worldNews" })
   });
 
   const toiBusinessPage = 'https://timesofindia.indiatimes.com/business';
@@ -130,23 +130,23 @@ export default async function toiScrapper() {
   });
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
-    await businessNewsScrapper({ page, selector: `[data-section="ind_biz_news"] a`, name: "indiaBusiness" })
+    await businessNewsScrapper({ page, selector: `[data-section="ind_biz_news"] a`, name: "businessNews" })
   })
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
-    await businessNewsScrapper({ page, selector: `[data-section="int_biz_news"] a`, name: "internationBusiness" })
+    await businessNewsScrapper({ page, selector: `[data-section="int_biz_news"] a`, name: "businessNews" })
   })
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
-    await businessNewsScrapper({ page, selector: `[data-section="corporatenews"] a`, name: "corporateNews" })
+    await businessNewsScrapper({ page, selector: `[data-section="corporatenews"] a`, name: "businessNews" })
   })
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
-    await businessNewsScrapper({ page, selector: `[data-section="economynews"] a`, name: "economyNews" })
+    await businessNewsScrapper({ page, selector: `[data-section="economynews"] a`, name: "businessNews" })
   })
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })
-    await businessNewsScrapper({ page, selector: `[data-section="cryptonews"] a`, name: "cryptoNews" })
+    await businessNewsScrapper({ page, selector: `[data-section="cryptonews"] a`, name: "businessNews" })
   })
   cluster.queue(async ({ page }: { page: Page }) => {
     await page.goto(toiBusinessPage, { waitUntil: "domcontentloaded" })

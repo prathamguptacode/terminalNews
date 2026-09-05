@@ -25,13 +25,21 @@ export default async function hindustanTimes() {
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(url, { waitUntil: "domcontentloaded" })
     await page.waitForSelector(".bottomRow")
-    await hindustanScrap({ page, selector: ".bottomRow a.sliderThumb", name: "leftSection" })
+    await hindustanScrap({ page, selector: ".bottomRow a.sliderThumb", name: "heroSection" })
   })
   cluser.queue(async ({ page }: { page: Page }) => {
     await page.goto(url, { waitUntil: "domcontentloaded" })
     await page.waitForSelector(".home_section_layout")
     await sportsHindustan({ page })
   })
+  cluser.queue(async ({ page }: { page: Page }) => {
+    const worldNewsUrl = "https://www.hindustantimes.com/world-news"
+    await page.goto(worldNewsUrl, { waitUntil: "domcontentloaded" })
+    await page.waitForSelector(".mainContainer")
+    await hindustanScrap({ page, selector: ".mainContainer h2>a", name: "worldNews" })
+  })
+
+
 
 
 

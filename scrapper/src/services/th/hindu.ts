@@ -15,20 +15,33 @@ export default async function hindu() {
     }
   })
 
-  const hinduUrl = "https://www.thehindu.com/"
+  const url = "https://www.thehindu.com/"
   cluser.queue(async ({ page }: { page: Page }) => {
-    await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-    await hinduScrap({ page, selector: ".top-section .title>a", name: "heroSection" })
+    await page.goto(url, { waitUntil: "domcontentloaded" })
+    await page.waitForSelector(".top-section")
+    await hinduScrap({ page, selector: ".top-section h3> a", name: "heroSection" })
   })
-  // cluser.queue(async ({ page }: { page: Page }) => {
-  //   await page.goto(hinduUrl, { waitUntil: "domcontentloaded" })
-  //   await hinduScrap({ page, selector: "section:nth-child(26) .title>a", name: "editorSection" })
-  // })
-  const hinduWorldUrl = "https://www.thehindu.com/news/international/"
   cluser.queue(async ({ page }: { page: Page }) => {
+    await page.goto(url, { waitUntil: "domcontentloaded" })
+    await page.waitForSelector(".top-section")
+    await hinduScrap({ page, selector: ".top-section a.picture", name: "heroSection" })
+  })
+  cluser.queue(async ({ page }: { page: Page }) => {
+    await page.goto(url, { waitUntil: "domcontentloaded" })
+    await page.waitForSelector(`[data-ga-label="extended-top-news"] h3>a`)
+    await hinduScrap({ page, selector: `[data-ga-label="extended-top-news"] h3>a`, name: "trendingSection" })
+  })
+  cluser.queue(async ({ page }: { page: Page }) => {
+    const sportsUrl = "https://www.thehindu.com/sport/"
+    await page.goto(sportsUrl, { waitUntil: "domcontentloaded" })
+    await page.waitForSelector(`.container:nth-child(2) h3>a`)
+    await hinduScrap({ page, selector: `.container:nth-child(2) h3>a`, name: "sportsNews" })
+  })
+  cluser.queue(async ({ page }: { page: Page }) => {
+    const hinduWorldUrl = "https://www.thehindu.com/news/international/"
     await page.goto(hinduWorldUrl, { waitUntil: "domcontentloaded" })
-    await page.waitForSelector("body > section:nth-child(28) .title>a ")
-    await hinduScrap({ page, selector: "body > section:nth-child(28) .title>a ", name: "worldNews" })
+    await page.waitForSelector(".container:nth-child(2) h3>a")
+    await hinduScrap({ page, selector: ".container:nth-child(2) h3>a", name: "worldNews" })
   })
 
 

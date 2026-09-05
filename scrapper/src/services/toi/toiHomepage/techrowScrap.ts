@@ -3,7 +3,7 @@ import articleScrapper from "../articleScrapper";
 
 export default async function techrowScrap(page: Page) {
   const hrefs = await page.evaluate(() => {
-    const anchors = document.querySelectorAll(`[data-type=in_view]:nth-child(7) a`) as NodeListOf<HTMLAnchorElement>
+    const anchors = document.querySelectorAll(`[data-type=in_view]:nth-child(8) a`) as NodeListOf<HTMLAnchorElement>
     const hrefs: string[] = []
     anchors.forEach(element => hrefs.push(element.href))
     return hrefs
